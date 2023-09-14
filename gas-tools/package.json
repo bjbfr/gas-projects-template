@@ -1,0 +1,23 @@
+{
+  "name": "gas-tools",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/gas-tools.js",
+  "type": "module",
+  "scripts": {
+    "test":    "yarn vitest -c ./vitest.config.ts --dir .",
+    "build":   "yarn tsc"
+  },
+  "bin": {
+    "gas-tools": "./cli-wrapper.mjs"
+  },
+  "keywords": ["tooling","Google App Scritps"],
+  "author": "benjamin.bouchard.fr@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "@types/npmlog": "^4.1.4",
+    "npmlog": "^7.0.1",
+    "@types/prompts": "^2.4.4",
+    "prompts": "^2.4.2"    
+  }
+}

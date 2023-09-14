@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "workspaces": [
+    "gas-tools",
+    "src/projects/*",
+    "src/libs/*"
+  ],
+  "scripts": {
+    "init_project": "yarn gas-tools init_project",
+    "init_lib": "yarn gas-tools init_lib",
+    "init_clasp": "yarn gas-tools init_clasp $INIT_CWD",
+    "tsc:build": "tsc --build $INIT_CWD",
+    "copy_deps": "yarn gas-tools copy_deps $INIT_CWD",
+    "build": "yarn tsc:build && yarn copy_deps",
+    "tsc:clean": "tsc --build $INIT_CWD --clean",
+    "clean": "yarn tsc:clean && yarn gas-tools clean_all $INIT_CWD",
+    "clean_build": "yarn clean && yarn build",
+    "test:vitest": "cd $INIT_CWD && vitest --dir .",
+    "push": "yarn clean_build && clasp push"
+  },
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.64",
+    "typescript": "^5.1.6",
+    "vitest": "^0.33.0"
+  }
+}

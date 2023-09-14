@@ -1,0 +1,4 @@
+templates/creds.json
+templates/.clasprc.json
+**/dist
+**/logs

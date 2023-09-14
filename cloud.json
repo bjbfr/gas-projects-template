@@ -1,0 +1,9 @@
+{
+    "gcp": {
+      "projectId":"<id>",
+      "projectNumber":42
+    },
+    "drive":{ 
+      "libFolder":"<folder id>"
+    }
+}
