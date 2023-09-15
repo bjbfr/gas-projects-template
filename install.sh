@@ -1,7 +1,10 @@
 REPO="https://github.com/bjbfr/gas-projects-template.git"
-mkdir dist && mkdir src && mkdir src/libs && mkdir src/projects
+# clone repo and create directories
 git clone "$REPO" . &&
-yarn install &&
+mkdir dist && mkdir src && mkdir src/libs && mkdir src/projects
+# install npm packages
+yarn install
+# build and link gas-tools
 cd gas-tools && mkdir logs &&
 yarn install &&
 yarn build &&
