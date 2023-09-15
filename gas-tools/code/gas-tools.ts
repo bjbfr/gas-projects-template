@@ -187,7 +187,7 @@ async function init_(name: string, artefactType: ArtefactType) {
 
   try {
     // execute template in newly created directory
-    const { stdout: templating } = await exec_file(TEMPLATE, [name], p);
+    const { stdout: templating } = await exec_file(TEMPLATE, [name], p,true);
 
     if (templating) {
       log.info(templating, `init_${artefactType}`);
@@ -196,7 +196,7 @@ async function init_(name: string, artefactType: ArtefactType) {
       do_clasp_init(p, artefactType, name)
     }
   } catch (e: any) {
-    log.error(e.message)
+    log.error(e.message.trim(), `init_${artefactType}`)
   }
   return;
 }

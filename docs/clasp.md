@@ -15,12 +15,25 @@ For more information, about link between Google AppScript projects and Google Cl
 - create and configure a Google Cloud Project:
     - create a Google Cloud Project (see: [create GCP](https://cloud.google.com/resource-manager/docs/creating-managing-projects)),
 
+    - report GCP identifiers in file cloud.json 
+    
+    ```
+    {
+        "gcp": {
+            //Google Cloud Project Id
+            "projectId":<id>,
+            //Google Cloud Project Number
+            "projectNumber":<number>
+        }
+    }
+    ```
+
     - configure credentials: 
 
     <img src="./img/credentials.png" style="width:637px;height:199px"/>
 
         - create credentials and then
-        - download credentials file (to be placed in src/templates/ as creds.json),
+        - download credentials file (to be placed in templates/ as creds.json),
 
     - configure OAuth consent screen: 
 
@@ -39,7 +52,7 @@ For more information, about link between Google AppScript projects and Google Cl
 
     - if you want to use ```clasp run```, you must login locally (i.e. with the previous credentials file). You can enable local login directly in the template project by running:
     
-        - ```clasp login --creds ./creds.json```
+        - 
     
         in the directory 'templates'.
 

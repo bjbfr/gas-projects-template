@@ -17,18 +17,9 @@ In your target directory, you excute install script using either
 2. Install clasp: 
   see detailed [instructions](./docs/clasp.md) (manual steps are required) 
 
-3. Optionally, define a cloud.json file:
-
-with the following structure:
-
+3. Optionally, add a "drive" entry in the cloud.json file:
 ```
 {
-    "gcp": {
-      //Google Cloud Project Id
-      "projectId":<id>,
-      //Google Cloud Project Number
-      "projectNumber":<number>
-    },
     "drive":{ 
       // id of Drive folder in which lib script should be stored
       "libFolder":<folder id>
@@ -47,6 +38,8 @@ with the following structure:
 - test (locally): ```yarn test:vitest```
 
 - push to Google Drive: ```yarn push```
+
+- login locally: ```clasp login --creds ./creds.json```
 
 - test (remotely): ```clasp run```
 
