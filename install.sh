@@ -7,6 +7,7 @@ yarn install
 echo  "==> build and link gas-tools"
 cd gas-tools && mkdir logs &&
 yarn install &&
-yarn build &&
+yarn build 
+# &&
 # do not use yarn link as it is buggy; do linking manually instead.
-cd ../node_modules/.bin &&  ln -s ../../gas-tools/cli-wrapper.mjs gas-tools
+# cd ../node_modules/.bin &&  ln -s ../../gas-tools/cli-wrapper.mjs gas-tools
