@@ -52,7 +52,7 @@
     // "noLib": false,
     // "skipLibCheck": false,
     "types": ["google-apps-script","common"],
-    "typeRoots": ["../../../src/@types", "../../../node_modules/@types"],
+    "typeRoots": ["../../../gas-tools/@types", "../../../node_modules/@types"],
     // BBO
     "outDir": "../../../dist/"
   },
