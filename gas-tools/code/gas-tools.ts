@@ -3,7 +3,7 @@ import * as fs from 'node:fs/promises'
 import ts from 'typescript'
 
 import log from "./gast-log.js"
-import { read_tsconfig, build_dirs, references } from "./gas-tsc-config.js"
+import { read_tsconfig, build_dirs, build_artefacts,references } from "./gas-tsc-config.js"
 import { list_files, copy_files, delete_all_files, common_paths, basename_n, extname_n, file_exists } from "./gast-path.js"
 import { REP_ROOT } from "./gast-globals.js"
 import { exists, read_json, write_json, get } from "./gast-utils.js"
@@ -88,24 +88,26 @@ export async function copy_deps(root: AbsolutePath) {
       return;
     }
     //files to be copied ...
-    // src directories
-    const src_dirs = refs.map(ref => {
+    // list of {dir,files} to be copied
+    const src_files = refs.map(ref => {
       const tsconfig = read_tsconfig(ref);
       if (tsconfig)
-        return build_dirs(tsconfig);
+        return build_artefacts(tsconfig);
       return;
     })
-      .filter(exists)
-      .flat() as Array<string>;
+    .flat()
+    .filter(exists) as Array<{dir:string,files:Array<string>}>;
 
-    // copy .js files associated with references and local appscript.json if any
+    // inputs for do_copy function
+    const inputs = src_files ? src_files.map( ({dir,files}) => {
+      const fs = files.map((file:string) => file.replace('ts','js'))
+      return {src_dirs:[dir],file_cbk:(file: string) => fs.indexOf(file) !== -1 && extname_n(file, 2) != '.test'}
+    }):[];
+
     do_copy(
-      [
-        { src_dirs: src_dirs, file_cbk: (file: string) => path.extname(file) === '.js' && extname_n(file, 2) != '.test' }, // only js and prevent copy of test files of dependencies
-        { src_dirs: [root], file_cbk: (file: string) => path.basename(file) === 'appsscript.json' }
-      ],
+      inputs.concat([{ src_dirs: [root], file_cbk: (file: string) => path.basename(file) === 'appsscript.json' }]),
       dst_dir
-    )
+    );
 
   } catch (e: any) {
     log.error(`Unhandled exception: ${e.message}`)
