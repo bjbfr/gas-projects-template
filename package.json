@@ -9,6 +9,7 @@
     "init_project": "yarn gas-tools init_project",
     "init_lib": "yarn gas-tools init_lib",
     "init_clasp": "yarn gas-tools init_clasp $INIT_CWD",
+    "update_clasp": "yarn gas-tools update_clasp $INIT_CWD",
     "tsc:build": "tsc --build $INIT_CWD",
     "copy_deps": "yarn gas-tools copy_deps $INIT_CWD",
     "build": "yarn tsc:build && yarn copy_deps",

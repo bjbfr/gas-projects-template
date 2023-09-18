@@ -187,7 +187,7 @@ async function init_(name: string, artefactType: ArtefactType) {
 
   try {
     // execute template in newly created directory
-    const { stdout: templating } = await exec_file(TEMPLATE, [name], p,true);
+    const { stdout: templating } = await exec_file(TEMPLATE, [name], p, true);
 
     if (templating) {
       log.info(templating, `init_${artefactType}`);
@@ -237,21 +237,33 @@ export async function update_clasp(root: AbsolutePath) {
  * @param root 
  */
 async function update_appscript_config(root: AbsolutePath) {
-  //appscript.json
+  // appscript.json
   const appscript_path = path.resolve(root, 'appsscript.json')
   const appscript_exists = await file_exists(appscript_path);
   if (appscript_exists) {
 
     let modified = false;
     const appscript = await read_json(appscript_path);
+    //executionApi.access
     const access = get(appscript, "executionApi.access")
     if (access !== "ANYONE") {
       appscript["executionApi"] = { "access": "ANYONE" };
       modified = true;
     }
+    // timeZone
     const timeZone = get(appscript, "timeZone");
     if (timeZone !== "Europe/Paris") {
       appscript["timeZone"] = "Europe/Paris";
+      modified = true;
+    }
+    // oauthScopes
+    const scopes = get(appscript, "oauthScopes")
+    if (!scopes) {
+      appscript["oauthScopes"] = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/documents",
+        "https://www.googleapis.com/auth/drive"
+      ];
       modified = true;
     }
     if (modified)
