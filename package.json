@@ -17,6 +17,8 @@
     "clean": "yarn tsc:clean && yarn gas-tools clean_all $INIT_CWD",
     "clean_build": "yarn clean && yarn build",
     "test:vitest": "cd $INIT_CWD && vitest --dir .",
+    "login": "cd $INIT_CWD && clasp login --creds ./creds.json",
+    "test:gas": "yarn push && clasp run",
     "push": "yarn clean_build && cd $INIT_CWD && clasp push"
   },
   "dependencies": {
