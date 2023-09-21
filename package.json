@@ -17,7 +17,7 @@
     "clean": "yarn tsc:clean && yarn gas-tools clean_all $INIT_CWD",
     "clean_build": "yarn clean && yarn build",
     "test:vitest": "cd $INIT_CWD && vitest --dir .",
-    "push": "yarn clean_build && clasp push"
+    "push": "yarn clean_build && cd $INIT_CWD && clasp push"
   },
   "dependencies": {
     "@types/google-apps-script": "^1.0.64",
