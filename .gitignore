@@ -2,6 +2,7 @@ templates/creds.json
 templates/.clasprc.json
 **/dist
 **/logs
+**/*.log
 **/node_modules
 **/yarn.lock
 **/results.json
