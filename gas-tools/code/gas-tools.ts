@@ -3,7 +3,7 @@ import * as fs from 'node:fs/promises'
 import ts from 'typescript'
 
 import log from "./gast-log.js"
-import { read_tsconfig, build_dirs, build_artefacts, references, root_dir } from "./gas-tsc-config.js"
+import { read_tsconfig, build_dirs, build_artefacts, references, out_dir_root } from "./gas-tsc-config.js"
 import { list_files, copy_files, delete_all_files, common_paths, basename_n, extname_n, file_exists, list_subdirectories_with_name } from "./gast-path.js"
 import { REP_ROOT } from "./gast-globals.js"
 import { exists, read_json, write_json, get } from "./gast-utils.js"
@@ -120,20 +120,18 @@ export async function copy_deps(root: AbsolutePath) {
  * @param root 
  */
 export async function clean_all(root: AbsolutePath) {
-
   try {
     const current = from_repRoot(root);
     log.info(`Clean build directory for ${current}`);
     const tsconfig = read_tsconfig(root);
     if (tsconfig) {
-      const rdir = root_dir(tsconfig);
+      const rdir = out_dir_root(root, tsconfig);
       if (rdir) {
-        log.info(`Clean directories from ${rdir}`);
-        const dirs = await list_subdirectories_with_name(rdir);
+        const dst_dirs = build_dirs(tsconfig);
         await Promise.all(
-          dirs.map(
+          [rdir].concat(dst_dirs || []).map(
             dir => {
-              delete_all_files(dir, (file) => log.verbose(`delete file: ${file}.`, 'clean_all'));
+              delete_all_files(dir, (file) => log.verbose(`delete file: ${file}.`, 'clean_all'), true);
               log.info(`Cleaning of ${from_repRoot(dir)} done.`, 'clean_all')
             }
           )
@@ -141,8 +139,7 @@ export async function clean_all(root: AbsolutePath) {
       }
       else
         log.warn(`Cannot find root dir for ${current}`);
-    }
-    else {
+    } else {
       log.warn(`Cannot find tsconfig for ${current}.`);
     }
   } catch (e: any) {

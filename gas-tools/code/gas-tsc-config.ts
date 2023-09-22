@@ -4,6 +4,7 @@ import path from 'node:path'
 import log from "./gast-log.js"
 import * as utils from "./gast-utils.js"
 import { exists } from "./gast-utils.js"
+import { common_path } from "./gast-path.js"
 
 /**
  * 
@@ -50,8 +51,13 @@ export function build_dirs(config: ts.ParsedCommandLine) {
  * @param config 
  * @returns 
  */
-export function root_dir(config: ts.ParsedCommandLine) {
-    return utils.get(config, "options.rootDir") as AbsolutePath;
+export function out_dir_root(root: AbsolutePath, config: ts.ParsedCommandLine) {
+    const rdir = utils.get(config, "options.rootDir") as AbsolutePath;
+    const outDir = utils.get(config, "options.outDir") as AbsolutePath;
+    if(rdir && outDir){
+        const rel = path.relative(rdir, root);
+        return path.resolve(outDir, rel);
+    }
 }
 /**
  * 
@@ -68,15 +74,15 @@ export function build_artefacts(config: ts.ParsedCommandLine) {
                 const srcDir = path.dirname(x);
                 const dir_ = path.resolve(outDir, path.relative(rootDir, srcDir));
                 const file = path.basename(x);
-                const tmp = acc.find(({dir}) => dir_ === dir);
-                if(tmp){
-                    const {files} = tmp;
+                const tmp = acc.find(({ dir }) => dir_ === dir);
+                if (tmp) {
+                    const { files } = tmp;
                     files.push(file);
-                }else{
-                    acc.push({dir:dir_,files:[file]})
+                } else {
+                    acc.push({ dir: dir_, files: [file] })
                 }
                 return acc;
-            }, [] as Array<{dir:string,files:Array<string>}>
+            }, [] as Array<{ dir: string, files: Array<string> }>
         );
     }
 }
