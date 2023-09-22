@@ -3,8 +3,8 @@ import * as fs from 'node:fs/promises'
 import ts from 'typescript'
 
 import log from "./gast-log.js"
-import { read_tsconfig, build_dirs, build_artefacts,references } from "./gas-tsc-config.js"
-import { list_files, copy_files, delete_all_files, common_paths, basename_n, extname_n, file_exists } from "./gast-path.js"
+import { read_tsconfig, build_dirs, build_artefacts, references, root_dir } from "./gas-tsc-config.js"
+import { list_files, copy_files, delete_all_files, common_paths, basename_n, extname_n, file_exists, list_subdirectories_with_name } from "./gast-path.js"
 import { REP_ROOT } from "./gast-globals.js"
 import { exists, read_json, write_json, get } from "./gast-utils.js"
 import { clasp_init } from "./gast-clasp.js"
@@ -95,14 +95,14 @@ export async function copy_deps(root: AbsolutePath) {
         return build_artefacts(tsconfig);
       return;
     })
-    .flat()
-    .filter(exists) as Array<{dir:string,files:Array<string>}>;
+      .flat()
+      .filter(exists) as Array<{ dir: string, files: Array<string> }>;
 
     // inputs for do_copy function
-    const inputs = src_files ? src_files.map( ({dir,files}) => {
-      const fs = files.map((file:string) => file.replace('ts','js'))
-      return {src_dirs:[dir],file_cbk:(file: string) => fs.indexOf(file) !== -1 && extname_n(file, 2) != '.test'}
-    }):[];
+    const inputs = src_files ? src_files.map(({ dir, files }) => {
+      const fs = files.map((file: string) => file.replace('ts', 'js'))
+      return { src_dirs: [dir], file_cbk: (file: string) => fs.indexOf(file) !== -1 && extname_n(file, 2) != '.test' }
+    }) : [];
 
     do_copy(
       inputs.concat([{ src_dirs: [root], file_cbk: (file: string) => path.basename(file) === 'appsscript.json' }]),
@@ -126,19 +126,23 @@ export async function clean_all(root: AbsolutePath) {
     log.info(`Clean build directory for ${current}`);
     const tsconfig = read_tsconfig(root);
     if (tsconfig) {
-      const dst_dirs = build_dirs(tsconfig);
-      if (dst_dirs)
+      const rdir = root_dir(tsconfig);
+      if (rdir) {
+        log.info(`Clean directories from ${rdir}`);
+        const dirs = await list_subdirectories_with_name(rdir);
         await Promise.all(
-          dst_dirs.map(
-            dst_dir => {
-              delete_all_files(dst_dir, (file) => log.verbose(`delete file: ${file}.`, 'clean_all'));
-              log.info(`Cleaning of ${from_repRoot(dst_dir)} done.`, 'clean_all')
+          dirs.map(
+            dir => {
+              delete_all_files(dir, (file) => log.verbose(`delete file: ${file}.`, 'clean_all'));
+              log.info(`Cleaning of ${from_repRoot(dir)} done.`, 'clean_all')
             }
           )
         );
+      }
       else
-        log.warn(`Cannot find build dir for ${current}`);
-    } else {
+        log.warn(`Cannot find root dir for ${current}`);
+    }
+    else {
       log.warn(`Cannot find tsconfig for ${current}.`);
     }
   } catch (e: any) {

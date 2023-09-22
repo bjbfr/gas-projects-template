@@ -50,6 +50,14 @@ export function build_dirs(config: ts.ParsedCommandLine) {
  * @param config 
  * @returns 
  */
+export function root_dir(config: ts.ParsedCommandLine) {
+    return utils.get(config, "options.rootDir") as AbsolutePath;
+}
+/**
+ * 
+ * @param config 
+ * @returns 
+ */
 export function build_artefacts(config: ts.ParsedCommandLine) {
     const fileNames = utils.get(config, "fileNames") as Array<AbsolutePath>;
     const rootDir = utils.get(config, "options.rootDir") as AbsolutePath;

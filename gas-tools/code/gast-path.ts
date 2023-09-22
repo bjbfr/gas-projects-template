@@ -38,14 +38,15 @@ export async function delete_all_files(dir:AbsolutePath,cbk:((file:string) => vo
  * @param from 
  * @returns 
  */
-export async function list_subdirectories_with_name(root:string,name:string,from:Array<string>=['.']){
+export async function list_subdirectories_with_name(root:string,name:string='.*',from:Array<string>=['.']){
+    const nameExp = new RegExp(name,'g');
     return  await (
         Promise.all(
         from.map( (x:string) => path.resolve(root,x) )
         .map( async (y:string) => 
           {
             return (await fs.readdir(y,{encoding:'utf8',withFileTypes:true}))
-            .filter(z => z.isDirectory() && z.name === name)
+            .filter(z => z.isDirectory() && nameExp.test(z.name))
             .map(d => d.path) 
           }
         )
