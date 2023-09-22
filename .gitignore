@@ -4,3 +4,4 @@ templates/.clasprc.json
 **/logs
 **/node_modules
 **/yarn.lock
+**/results.json
