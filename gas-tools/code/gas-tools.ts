@@ -85,7 +85,7 @@ export async function copy_deps(root: AbsolutePath) {
 
     if (refs.length === 0) {
       log.info(`No dependency to be copied.`);
-      return;
+      // return; even if no dependency, appsscript.json still have to be copied
     }
     //files to be copied ...
     // list of {dir,files} to be copied
