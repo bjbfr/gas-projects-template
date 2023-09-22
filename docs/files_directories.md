@@ -3,13 +3,13 @@
 ## High-level
 
 ```
-├── dist : root of build directories for projects/libs.
-├── docs : documentation.
-├── gas-tools : source code for various helping commands defined in package.json ('yarn gas-tools <cmd> args').
+├── dist/ : root of build directories for projects/libs.
+├── docs/ : documentation.
+├── gas-tools/ : source code for various helping commands defined in package.json ('yarn gas-tools <cmd> args').
 ├── install.sh : install script.
 ├── package.json : defines the whole repository as a node project with workspaces enabled; commands are defined here.
 ├── Readme.md
-├── templates : template files for defining libs and projects (used in commands 'yarn init_lib <name>' and 'yarn init_project <name>').
+├── templates/ : template files for defining libs and projects (used in commands 'yarn init_lib <name>' and 'yarn init_project <name>').
 └── vitest.config.ts : configuration file for vitest; plugin for testing GAS code is defined here.
 ```
 
@@ -19,8 +19,8 @@
 
 ```
 ├── src
-    ├── libs : root for all libs.
-    └── projects : root for all projects.
+    ├── libs/ : root for all libs.
+    └── projects/ : root for all projects.
 ```
 
 Those directories are created during install.
@@ -28,12 +28,14 @@ Those directories are created during install.
 - Each library/project contains the following directory/files:
 
 ```
+./
 ├── appsscript.json : manifest file for AppScript
-├── .claspignore -> ../../templates/.claspignore : clasp config file that defines which files to push
-├── .clasp.json : clasp config file that defines scriptId and rootDir
-├── code : directory source code
-├── tsconfig-gas.json -> ../../templates/tsconfig-gas.json : ts base config file
-└── tsconfig.json : ts config file that extends ts base config file.
+├── code/ :  directory source code
+│   └── tests/ : directory for gas tests
+├── creds.json -> ../../../templates/creds.json : credentials file 
+├── tsconfig-gas.json -> ../../../templates/tsconfig-gas.json : ts base config file
+├── tsconfig.json : ts config file that extends ts base config file
+└── vitests/ : directory for local tests
 ```
 
 This is set-up automatically when using init_lib/init_project commands.
