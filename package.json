@@ -19,8 +19,10 @@
     "clean_all": "cd $INIT_CWD && for d in `ls -d */`; do cd `pwd`/$d;yarn gas-tools clean_all `pwd`; cd ..;done",
     "clean_build": "yarn clean && yarn build",
     "test:vitest": "cd $INIT_CWD && vitest --dir .",
-    "login": "cd $INIT_CWD && clasp login --creds ./creds.json",
+    "test_all:vitest": "cd $INIT_CWD && for d in `ls -d */`; do cd `pwd`/$d && vitest --passWithNoTests --run --dir .; cd ..;done",
+    "login:gas": "cd $INIT_CWD && clasp login --creds ./creds.json",
     "test:gas": "yarn push && cd $INIT_CWD && clasp run",
+    "test_all:gas": "cd $INIT_CWD && for d in `ls -d */`; do cd `pwd`/$d;echo ============ && echo `pwd` && clasp run test_all; cd ..;done",
     "push": "yarn build && cd $INIT_CWD && clasp push"
   },
   "dependencies": {

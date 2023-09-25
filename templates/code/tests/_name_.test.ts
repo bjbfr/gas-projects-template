@@ -5,3 +5,8 @@ function test_(){
 
 
 }
+
+// test_all
+function test_all(){
+    return Unittest.run_all([])
+}
