@@ -24,5 +24,5 @@ sed -i "s/_name_/${1}/g" ./vitests/${1}.test.ts
 # test file
 cp ${TEMPLATE_DIR}/code/tests/_name_.test.ts ./code/tests/${1}.test.ts
 sed -i "s/_name_/${1}/g" ./code/tests/${1}.test.ts
-echo -n "templating done."
+echo "templating done."
 exit 0
